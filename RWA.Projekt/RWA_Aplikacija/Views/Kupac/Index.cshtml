@@ -1,0 +1,102 @@
+﻿@model IEnumerable<RWA_Aplikacija.AdventureWorksOBP.Kupac>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kupci</h2>
+
+<a href="~/WebForms/KupacDodajWebForma.aspx" class="btn btn-primary" style="margin-bottom: 15px;"> Dodaj Kupca </a>
+
+<table id="kupci" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Email</th>
+            <th>Telefon</th>
+            <th>Grad</th>
+            <th>Izbriši Kupca</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#kupci").DataTable({    //sortiranje i trazilica
+                "language": {
+                    "lengthMenu": 'Prikaži <select>' +
+                        '<option value="10">10</option>' +
+                        '<option value="25">25</option>' +
+                        '<option value="50">50</option>' +
+                        '</select> Kupaca po stranici'
+                },
+                ajax: {
+                    url: "/api/Kupci",
+                    dataSrc: ""  //prazan string jer koristimo listu objekata a ne 1 objekt
+                },
+                columns: [
+                    {
+                        data: "ime",  //gleda property ime da generira ostalo
+                        render: function (data, type, row) { //renderira svaki red u stupcu
+                            return "<a href='/Kupac/details/" + row.idKupac + "'>" + data + "</a>"
+                        }
+                    },
+                    {
+                        data: "prezime",  //gleda property ime da generira ostalo
+                        render: function (data, type, row) { //renderira svaki red u stupcu
+                            return "<a href='/Kupac/details/" + row.idKupac + "'>" + data + "</a>"
+                        }
+                    },
+                    {
+                        data: "email",  //gleda property ime da generira ostalo
+                        render: function (data, type, row) { //renderira svaki red u stupcu
+                            return "<p>" + data + "</p>"
+                        }
+                    },
+                    {
+                        data: "telefon",  //gleda property ime da generira ostalo
+                        render: function (data, type, row) { //renderira svaki red u stupcu
+                            return "<p>" + data + "</p>"
+                        }
+                    },
+                    {
+                        data: "gradID",  //gleda property ime da generira ostalo
+                        render: function (data, type, row) { //renderira svaki red u stupcu
+                            return "<p>" + data + "</p>"
+                        }
+                    },
+                    {
+                        data: "idKupac",  //gleda property ime da generira ostalo
+                        render: function (data) { //renderira svaki red u stupcu
+                            return "<button class='btn-link js-delete' data-kupac-id=" + data + "> Izbriši </button>";
+                        }
+                    }
+
+
+
+                ]
+            });
+
+            //ako je click vezan uz ".js-delete" zove se funkcija
+            $("#kupci").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Želite li izbrisati odabranog kupca?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/kupci/" + button.attr("data-kupac-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+

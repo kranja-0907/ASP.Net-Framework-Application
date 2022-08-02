@@ -1,0 +1,26 @@
+﻿@model IEnumerable<RWA_Aplikacija.AdventureWorksOBP.Kategorija>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kategorija</h2>
+
+<a href='https://localhost:44324/Kategorija/New' class="btn btn-primary"> Dodaj Kategoriju </a>
+<table class="table-bordered table">
+    <thead>
+        <tr>
+            <td>ID Kategorije</td>
+            <td>Naziv kategorije</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kategorija in Model)
+        {
+            <tr>
+                <td><p>@kategorija.IDKategorija</p>
+                <td>@Html.ActionLink(kategorija.Naziv, "Edit", "Kategorija", new { id = kategorija.IDKategorija }, null)</td>
+            </tr>
+        }
+    </tbody>
+</table>

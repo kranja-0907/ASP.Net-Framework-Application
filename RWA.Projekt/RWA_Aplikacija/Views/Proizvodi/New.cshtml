@@ -1,0 +1,54 @@
+﻿@model RWA_Aplikacija.ViewModels.ProizvodPodaciViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Nova/Uredi Proizvod</h2>
+@using (Html.BeginForm("Save", "Proizvodi"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod.Naziv);
+        @Html.TextBoxFor(m => m.Proizvod.Naziv, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Proizvod.Naziv)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod.Boja);
+        @Html.TextBoxFor(m => m.Proizvod.Boja, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Proizvod.Boja)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod.BrojProizvoda);
+        @Html.TextBoxFor(m => m.Proizvod.BrojProizvoda, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Proizvod.BrojProizvoda)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod.CijenaBezPDV);
+        @Html.TextBoxFor(m => m.Proizvod.CijenaBezPDV, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Proizvod.CijenaBezPDV)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod.MinimalnaKolicinaNaSkladistu);
+        @Html.TextBoxFor(m => m.Proizvod.MinimalnaKolicinaNaSkladistu, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Proizvod.MinimalnaKolicinaNaSkladistu)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Proizvod.PotkategorijaID);                                           @*po cemu bira       vrijednost   naslov kad je prazno*@
+        @Html.DropDownListFor(m => m.Proizvod.PotkategorijaID, new SelectList(Model.Potkategorije, "IDPotkategorija", "Naziv"), "Odaberite Potkategoriju", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Proizvod.PotkategorijaID)
+    </div>
+    @Html.AntiForgeryToken();
+    @Html.HiddenFor(m => m.Proizvod.IDProizvod)
+
+    <button class="btn btn-primary" type="submit">Spremi</button>
+
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+} 

@@ -1,0 +1,27 @@
+﻿@model RWA_Aplikacija.AdventureWorksOBP.Kategorija
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Nova/Uredi Kategoriju</h2>
+
+@using (Html.BeginForm("Save", "Kategorija"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Naziv);
+        @Html.TextBoxFor(m => m.Naziv, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Naziv)
+    </div>
+
+    @Html.AntiForgeryToken();
+    @Html.HiddenFor(m => m.IDKategorija)
+
+    <button class="btn btn-primary" type="submit">Spremi</button>
+
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+}
+

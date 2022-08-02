@@ -1,0 +1,85 @@
+﻿@model IEnumerable<RWA_Aplikacija.AdventureWorksOBP.Proizvod>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2>Proizvodi</h2>
+
+<a href='https://localhost:44324/Proizvodi/New' class="btn btn-primary"> Dodaj Proizvod </a>
+
+<table id="tablica" class="table table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Broj proizvoda</th>
+            <th>Cijena bez PDV-a</th>
+            <th>Izbriši</th>
+        </tr>
+    </thead>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#tablica").DataTable(
+                {
+                "language": {
+                    "lengthMenu": 'Prikaži <select>' +
+                        '<option value="10">10</option>' +
+                        '<option value="25">25</option>' +
+                        '<option value="50">50</option>'
+                },
+                ajax: {
+                    url: "/api/Proizvodi/",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "naziv",
+                        render: function (data, type, row) {
+                            return "<a href='/proizvodi/Edit/" + row.idProizvod + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "brojProizvoda",
+                        render: function (data, type, row) {
+                            return "<p>" + data + "</p>";
+                        }
+                    },
+                    {
+                        data: "cijenaBezPDV",
+                        render: function (data, type, row) {
+                            return "<p>" + data + "</p>";
+                        }
+                    },
+                    {
+                        data: "idProizvod",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-proizvod-id=" + data + "> Izbriši</button>";
+                        }
+                    }
+                ]
+            });
+
+
+            $("#tablica").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Želite li izbrisati odabrani proizvod?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/proizvodi/" + button.attr("data-proizvod-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,25 @@
+﻿@model RWA_Aplikacija.ViewModels.KupacSesija
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<a href="~/WebForms/KupacUpdejtajWebForma.aspx" class="btn btn-primary">Uredi Kupca</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>ID Račun</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var racun in Model.Racuni)
+        {
+            <tr>
+                <td>@Html.ActionLink(racun.IDRacun.ToString(),"ReceiptDetails","Kupac", new { id = racun.IDRacun} ,null)</td>
+            </tr>
+        }
+    </tbody>
+</table>
